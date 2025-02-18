@@ -7,7 +7,7 @@ def read_file(file_name: str)-> pd.DataFrame :
 
 def process_data(rex_df: pd.DataFrame, sportitude_df: pd.DataFrame, stock_df: pd.DataFrame)-> pd.DataFrame:
     
-    ignore_product_name = ['quantum', 'sale', 'champion', 'zoggs', 'afl', 'patrick', "port adelaide", "pafc", "basketball", "jersey", "jsy"]
+    ignore_product_name = ['quantum', 'sale', 'champion', 'zoggs', 'afl', 'patrick', "port adelaide", "pafc", "basketball", "jersey", "jsy", "jordan", "crocs", "futura"]
     ignore_product_type = ['ftwr', "shoes", "balls", "gloves", "football", "soccer"]  
     
     barcodes_with_stock = set(stock_df[stock_df['Qty Avail'] > 0]['SKU'].astype(str))
@@ -25,7 +25,6 @@ def process_data(rex_df: pd.DataFrame, sportitude_df: pd.DataFrame, stock_df: pd
         not_in_website = all(barcode not in barcodes_in_website for barcode in barcodes)
         if has_stock and not_in_website:
             valid_product_codes.add(product_code)
-            
 
     
     result_df = rex_df[rex_df["ManufacturerSKU"].isin(valid_product_codes)]
