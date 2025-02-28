@@ -9,23 +9,20 @@ def update_inventory(matrixify_new: pd.DataFrame, filter_df: pd.DataFrame, rex_d
     
     filter_barcodes = set(filter_df["Variant SKU"].astype("str"))
     grouped = matrixify_new.groupby("ID")
-    
     updated_count = 0
     skipped_count = 0
-    
-    # Set to track updated SKUs
     updated_skus = set()
     
     for product_id, group in grouped:
         try:
-            first_variant = "'" + str(group["Variant SKU"].iloc[0])
+            first_variant_generic = str(group["Variant SKU"].iloc[0])
+            first_variant_actual = "'" + first_variant_generic
             
-            if first_variant in filter_barcodes:
+            if first_variant_actual in filter_barcodes or first_variant_generic in filter_barcodes:
                 product_skus = group["Variant SKU"].astype(str)
                 
                 for sku in product_skus:
                     try:
-                        # Create masks for matrixify_new and rex_df
                         new_mask = updated_df["Variant SKU"] == sku
                         rex_mask = rex_df["Supplier_product_id"] == sku
                         
@@ -54,14 +51,14 @@ def update_inventory(matrixify_new: pd.DataFrame, filter_df: pd.DataFrame, rex_d
     
     print(f"Updated inventory for {updated_count} products")
     print(f"Skipped {skipped_count} SKUs due to missing data or errors")
+    # updated_df.to_csv("./updated_df.csv", index=False )
     return updated_df, updated_skus
     
-
 
 if __name__ == "__main__":
     MATRIXIFY_NEW = 'inputData/matrixify_new.csv'
     FILTER_FILE = 'inputData/test_upload.csv'
-    REX_FILE = 'inputData/rex_inventory.csv'
+    REX_FILE = 'inputData/rex_inventory_2_27.csv'
     
     matrixify_new_df = read_file(MATRIXIFY_NEW)
     filter_df = read_file(FILTER_FILE)
@@ -73,7 +70,7 @@ if __name__ == "__main__":
     updated_products_df = result_df[result_df['Variant SKU'].isin(updated_skus)]
     
     # Save only the updated products
-    output_path = 'output/updated_products_rex_inventory.csv'
+    output_path = 'output/updated_products_rex_inventory-2-27.csv'
     updated_products_df.to_csv(output_path, index=False)
     
     print(f"Updated products saved to: {output_path}")
