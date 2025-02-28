@@ -20,7 +20,6 @@ def update_inventory(matrixify_new: pd.DataFrame, filter_df: pd.DataFrame, rex_d
             
             if first_variant_actual in filter_barcodes or first_variant_generic in filter_barcodes:
                 product_skus = group["Variant SKU"].astype(str)
-                
                 for sku in product_skus:
                     try:
                         new_mask = updated_df["Variant SKU"] == sku
@@ -66,11 +65,9 @@ if __name__ == "__main__":
     
     result_df, updated_skus = update_inventory(matrixify_new_df, filter_df, rex_df)
     
-    # Create a new dataframe with only the updated products
     updated_products_df = result_df[result_df['Variant SKU'].isin(updated_skus)]
     
-    # Save only the updated products
-    output_path = 'output/updated_products_rex_inventory-2-27.csv'
+    output_path = 'output/fake_barcodes_fix.csv'
     updated_products_df.to_csv(output_path, index=False)
     
     print(f"Updated products saved to: {output_path}")
