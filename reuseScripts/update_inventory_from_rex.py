@@ -57,7 +57,7 @@ def update_inventory(matrixify_new: pd.DataFrame, filter_df: pd.DataFrame, rex_d
 if __name__ == "__main__":
     MATRIXIFY_NEW = 'inputData/matrixify_new.csv'
     FILTER_FILE = 'inputData/test_upload.csv'
-    REX_FILE = 'inputData/rex_inventory_2_27.csv'
+    REX_FILE = 'inputData/rex_inventory_4_3.csv'
     
     matrixify_new_df = read_file(MATRIXIFY_NEW)
     filter_df = read_file(FILTER_FILE)
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     
     updated_products_df = result_df[result_df['Variant SKU'].isin(updated_skus)]
     
-    output_path = 'output/fake_barcodes_fix.csv'
+    output_path = 'output/updated_inventory_4_3.csv'
     updated_products_df.to_csv(output_path, index=False)
     
     print(f"Updated products saved to: {output_path}")
