@@ -175,12 +175,14 @@ def download_image(image_url: str, save_path: str) -> bool:
 
 if __name__ == "__main__":
     
-    FEED_FILE = "inputData/feed.csv"
+    FEED_FILE = "inputData/today_missing.csv"
     REX_FILE = "inputData/rex.csv"
     MATRIXIFY_FILE = "inputData/matrixify.csv"
     feed_df = read_file(FEED_FILE)
     rex_df = read_file(REX_FILE)
-    matrixify_df = read_file(MATRIXIFY_FILE)
+    # matrixify_df = read_file(MATRIXIFY_FILE)
     
-    download_images(feed_df=feed_df, rex_df=rex_df, matrixify_df=matrixify_df)
+    result_df = process_data(rex_df=rex_df, feed_df=feed_df)
+    result_df.to_csv('outputData/march9products.csv', index=False)
+    # download_images(feed_df=feed_df, rex_df=rex_df, matrixify_df=matrixify_df)
     print('Exiting...')
